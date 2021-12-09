@@ -6,20 +6,26 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SET_ALARM"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/gardening"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/gardening"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat"
+        android:theme="@style/Theme.Watering"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".MainActivity">
+        <activity android:name=".RegisterActivity"
+            tools:ignore="Instantiatable"></activity>
+        <activity android:name=".LoginActivity"
+            tools:ignore="Instantiatable" />
+        <activity android:name=".MainActivity"
+                    android:exported="true"
+            tools:ignore="Instantiatable">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

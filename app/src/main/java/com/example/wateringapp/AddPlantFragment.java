@@ -41,6 +41,7 @@ import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.wateringapp.databinding.AddFragmentBinding;
 import com.example.wateringapp.models.PlantModel;
 import com.example.wateringapp.repository.AppDatabase;
 import com.example.wateringapp.repository.PlantDao;
@@ -59,9 +60,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class AddPlantFragment extends Fragment  {
 
-    private EditText editTextName, editTextDate, editTextTime;
-    private ImageButton imageButtonAddPhoto, imageButtonBack;
-    private Button buttonAdd;
+    private AddFragmentBinding binding;
+
     private String selectedRoutine = "";
     private int selectedRoutineId = 0;
     private Bitmap bitmap;
@@ -80,26 +80,7 @@ public class AddPlantFragment extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.add_fragment,container,false);
-
-
-        // ReminderHelper reminderHelper = new ReminderHelper(getActivity());
-
-        editTextName = view.findViewById(R.id.editTextName);
-        editTextDate = view.findViewById(R.id.editTextDate);
-        editTextTime = view.findViewById(R.id.editTextTime);
-        imageButtonAddPhoto = view.findViewById(R.id.imageButtonAddPhoto);
-        imageButtonBack = view.findViewById(R.id.imageButtonBack);
-        buttonAdd = view.findViewById(R.id.buttonAdd);
-
-        imageButtonBack.setOnClickListener(new View.OnClickListener() { // back to PlantList fragment
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentHolder, new com.example.wateringapp.PlantListFragment(),"null").commit();
-            }
-        });
-
+        binding = AddFragmentBinding.inflate(inflater,container,false);
 
         // Checking camera permission
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
@@ -108,7 +89,7 @@ public class AddPlantFragment extends Fragment  {
             }, 100 );
         }
 
-        imageButtonAddPhoto.setOnClickListener(new View.OnClickListener() {  // add plant image from gallery or camera
+        binding.imageButtonAddPhoto.setOnClickListener(new View.OnClickListener() {  // add plant image from gallery or camera
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -150,7 +131,7 @@ public class AddPlantFragment extends Fragment  {
             }
         });
 
-        editTextDate.setOnClickListener(new View.OnClickListener() { // picking date for create notification
+        binding.editTextDate.setOnClickListener(new View.OnClickListener() { // picking date for create notification
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
@@ -166,7 +147,7 @@ public class AddPlantFragment extends Fragment  {
 
                         month = month+1;
                         String date = dayOfMonth+" "+month+" "+year;
-                        editTextDate.setText(date);
+                        binding.editTextDate.setText(date);
 
                     }
                 },year,month,day);
@@ -177,7 +158,7 @@ public class AddPlantFragment extends Fragment  {
             }
         });
 
-        editTextTime.setOnClickListener(new View.OnClickListener() { // picking watering time for create notification
+        binding.editTextTime.setOnClickListener(new View.OnClickListener() { // picking watering time for create notification
             @Override
             public void onClick(View v) {
                // Calendar calendar = Calendar.getInstance(); // telefondan zaman değerlerini aldık
@@ -188,7 +169,7 @@ public class AddPlantFragment extends Fragment  {
                 timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            editTextTime.setText(hourOfDay+":"+minute);
+                            binding.editTextTime.setText(hourOfDay+":"+minute);
 
                             now.set(Calendar.HOUR_OF_DAY,hourOfDay);
                             now.set(Calendar.MINUTE,minute);
@@ -214,13 +195,13 @@ public class AddPlantFragment extends Fragment  {
             }
         });
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+        /*Spinner spinner = (Spinner) view.findViewById(R.id.spinner);*/
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.plants_routine, R.layout.color_spinner_layout);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        spinner.setAdapter(adapter);
+        binding.spinner.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { // selecting watering routine for notification interval
+        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { // selecting watering routine for notification interval
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedRoutine = parent.getItemAtPosition(position).toString();
@@ -240,17 +221,17 @@ public class AddPlantFragment extends Fragment  {
 
 
 
-        buttonAdd.setOnClickListener(new View.OnClickListener() {  // Creating new plant and it datas saving in room db
+        binding.buttonAdd.setOnClickListener(new View.OnClickListener() {  // Creating new plant and it datas saving in room db
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
 
-                Log.e("edit text name = ",editTextName.getText().toString());
+               /* Log.e("edit text name = ",editTextName.getText().toString());
                 Log.e("edit text time", String.valueOf((now.getTimeInMillis())));
                 Log.e("time picker hour", String.valueOf(now.getTime().getHours()));
                 Log.e("edit text date",editTextDate.getText().toString());
                 Log.e("plant routine",spinner.getSelectedItem().toString());
-                Log.e("system time", String.valueOf(SystemClock.elapsedRealtime()));
+                Log.e("system time", String.valueOf(SystemClock.elapsedRealtime()));*/
 
                 LocalTime localTime = LocalDateTime.ofInstant(now.toInstant(), now.getTimeZone().toZoneId()).toLocalTime();
                 long x = localTime.toNanoOfDay();
@@ -264,16 +245,16 @@ public class AddPlantFragment extends Fragment  {
 
 
                 //Checking empty input before save
-                if (editTextName.getText().toString().trim().length() == 0 || editTextTime.getText().toString().trim().length() == 0 ||
-                 editTextDate.getText().toString() == "" || spinner.getSelectedItemId() == 0 || photoUrl == null ){
+                if (binding.editTextName.getText().toString().trim().length() == 0 || binding.editTextTime.getText().toString().trim().length() == 0 ||
+                 binding.editTextDate.getText().toString() == "" || binding.spinner.getSelectedItemId() == 0 || photoUrl == null ){
                     Toast.makeText(getContext(), "Eksik bilgi",Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //Creating plantModel object for room db
-                PlantModel plantModel = new PlantModel(0,editTextName.getText().toString(),
-                        editTextDate.getText().toString(),
-                        editTextTime.getText().toString(),
+                PlantModel plantModel = new PlantModel(0,binding.editTextName.getText().toString(),
+                        binding.editTextDate.getText().toString(),
+                        binding.editTextTime.getText().toString(),
                         selectedRoutine,
                         selectedRoutineId,
                         photoUrl);
@@ -291,28 +272,26 @@ public class AddPlantFragment extends Fragment  {
                         .commit();
 
 
-               /*
-                    b*yar şahintekin things
-
-                String string = editTextDate.getText().toString() + " " + editTextTime.getText().toString();
-                DateFormat format = new SimpleDateFormat("dd MM yyyy HH:mm:ss", Locale.ENGLISH);
-                try {
-                    Date date = format.parse(string);
-                    reminderHelper.scheduleNotification(reminderHelper.getNotification(plantModel.getRoutine()),date.getTime(),selectedRoutineId);
-                } catch (ParseException e) {
-                   // Log.e("Add Fragment",);
-                    e.printStackTrace();
-                }*/
-
             }
         });
 
-        return view;
+        return binding.getRoot();
 
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
 
-   private void pickImageFromGallery(){
+    // to avoid memory leaks
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    private void pickImageFromGallery(){
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, IMAGE_PICK_CODE);
@@ -344,7 +323,7 @@ public class AddPlantFragment extends Fragment  {
                     .load(bitmap)
                     .apply(new RequestOptions().override(720,720))
                     .centerCrop()
-                    .into(imageButtonAddPhoto);  //Set captured image to image button
+                    .into(binding.imageButtonAddPhoto);  //Set captured image to image button
 
         }else if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
 
@@ -362,7 +341,7 @@ public class AddPlantFragment extends Fragment  {
                     .load(imageUri)
                     .apply(new RequestOptions().override(720,720))
                     .centerCrop()
-                    .into(imageButtonAddPhoto); // set picked image from gallery to image button
+                    .into(binding.imageButtonAddPhoto); // set picked image from gallery to image button
 
         }
 

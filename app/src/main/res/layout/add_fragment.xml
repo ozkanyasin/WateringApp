@@ -8,12 +8,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="81dp"
-        tools:layout_editor_absoluteY="77dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -30,7 +31,7 @@
                 android:drawableLeft="@drawable/green_tea"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="Bitki Adı"
+                android:hint="@string/bitki_ad"
                 android:inputType="textPersonName"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
@@ -54,13 +55,13 @@
                 android:ems="10"
                 android:focusableInTouchMode="false"
                 android:gravity="center"
-                android:hint="Başlangıç Tarihi"
+                android:hint="@string/baslangic_tarihi"
                 android:onClick="openDatePicker"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.492"
                 app:layout_constraintStart_toStartOf="parent"
@@ -78,13 +79,13 @@
                 android:ems="10"
                 android:focusableInTouchMode="false"
                 android:gravity="center"
-                android:hint="Başlangıç Saati"
+                android:hint="@string/baslangic_saati"
                 android:inputType="textPersonName"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +98,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
                 android:backgroundTint="@color/colorDeneme"
-                android:text="Ekle"
+                android:text="@string/ekle"
+                android:textColor="@color/white"
                 app:background="@color/colorDeneme"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -138,20 +140,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
-
-            <ImageButton
-                android:id="@+id/imageButtonBack"
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="15dp"
-                android:background="@color/space_transparent"
-                android:src="@drawable/back_arrow_icon"
-                android:tint="#FFFFFF"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/back_arrow_icon" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

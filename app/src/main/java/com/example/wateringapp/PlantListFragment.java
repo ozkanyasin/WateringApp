@@ -8,48 +8,50 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.room.Room;
 
+import com.example.wateringapp.databinding.PlantListFragmentBinding;
 import com.example.wateringapp.models.PlantModel;
 import com.example.wateringapp.repository.AppDatabase;
 import com.example.wateringapp.repository.PlantDao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlantListFragment extends Fragment {
 
-    private RecyclerView recyclerView;
+    private PlantListFragmentBinding binding;
 
-    private PlantsAdapter adapter;
+    //private PlantsAdapter adapter;
 
-
+    private RecyclerAdapter adapter;
+   // private PlantModel plantModel;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.plant_list_fragment,container,false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
+        binding = PlantListFragmentBinding.inflate(inflater,container,false);
+        adapter = new RecyclerAdapter(getContext(),getParentFragmentManager());
 
+        binding.plantListRecyclerView.setAdapter(adapter);
+
+        initPlantModel();
+
+
+        return binding.getRoot();
+    }
+
+    private void initPlantModel(){
         AppDatabase db = Room.databaseBuilder(getContext(),
                 AppDatabase.class, "ozkan").allowMainThreadQueries().fallbackToDestructiveMigration().build();
         PlantDao plantDao = db.userDao();
 
-
-        adapter = new PlantsAdapter(getContext(), getParentFragmentManager());
-        recyclerView.setAdapter(adapter);
-
-        List<PlantModel> data = plantDao.getAll();
-        adapter.setList(data);
-
-
-
-        return view;
+        ArrayList<PlantModel> data = (ArrayList<PlantModel>) plantDao.getAll();
+        adapter.setPlantModels(data);
     }
 
 

@@ -1,5 +1,5 @@
-/*
 package com.example.wateringapp;
+
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
@@ -21,59 +19,81 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
-import com.example.wateringapp.databinding.PlantsCardviewBinding;
+import com.example.wateringapp.databinding.PlantsRowBinding;
 import com.example.wateringapp.models.PlantModel;
 import com.example.wateringapp.repository.AppDatabase;
 import com.example.wateringapp.repository.PlantDao;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-public class    PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantsObjHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.PlantsViewHolder>{
 
+    List<PlantModel> plantModels = new ArrayList<>();
+    Context mContext;
+    PlantModel plantModel;
+    FragmentManager fragmentManager;
 
-    private Context mContext;
-    private List<PlantModel> plantsList;
-    public Animation animation1, animation2;
-    public PlantModel plant;
-    public FragmentManager fragmentManager;
-
-    public PlantsAdapter(Context mContext, FragmentManager fragmentManager) {
+    public RecyclerAdapter(Context mContext, FragmentManager fragmentManager) {
         this.mContext = mContext;
         this.fragmentManager = fragmentManager;
-
     }
 
-    public class PlantsObjHolder extends RecyclerView.ViewHolder{
-        public PlantsCardviewBinding binding;
+    public void setPlantModels(List<PlantModel> plantModels){
+        this.plantModels = plantModels;
+        notifyDataSetChanged();
+    }
 
 
-        public PlantsObjHolder(@NonNull View itemView) {
-            super(itemView);
-            imageViewPlant = itemView.findViewById(R.id.imageViewPlant);
-            textViewPlantName = itemView.findViewById(R.id.textViewPlantName);
-            textViewTime = itemView.findViewById(R.id.textViewTime);
-            buttonWater = itemView.findViewById(R.id.buttonWater);
-            buttonOption = itemView.findViewById(R.id.buttonOption);
+    @NonNull
+    @org.jetbrains.annotations.NotNull
+    @Override
+    public PlantsViewHolder onCreateViewHolder(@NonNull @org.jetbrains.annotations.NotNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        PlantsRowBinding plantsRowBinding = PlantsRowBinding.inflate(layoutInflater, parent,false);
+        return new PlantsViewHolder(plantsRowBinding);
+    }
 
-            animation1 = AnimationUtils.loadAnimation(mContext,R.anim.watering_anim);
-            animation2 = AnimationUtils.loadAnimation(mContext,R.anim.card_item_anim);
+    @Override
+    public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull RecyclerAdapter.PlantsViewHolder holder, int position) {
+        plantModel = plantModels.get(position);
+        holder.bindView(plantModels.get(position));
+    }
 
-            itemView.setAnimation(animation2);
+    @Override
+    public int getItemCount() {
+        return plantModels.size();
+    }
 
-            binding.buttonWater.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    binding.buttonWater.startAnimation(animation1);
-                }
-            });
-            binding.buttonOption.setOnClickListener(new View.OnClickListener() {
+
+    class PlantsViewHolder extends RecyclerView.ViewHolder{
+
+        PlantsRowBinding plantsRowBinding;
+
+        public PlantsViewHolder(@NonNull PlantsRowBinding plantsRowBinding){
+            super(plantsRowBinding.getRoot());
+            this.plantsRowBinding = plantsRowBinding;
+        }
+
+        public void bindView(PlantModel plantModel){
+            plantModel = plantModels.get(getPosition());
+
+            plantsRowBinding.textViewPlantName.setText(plantModel.getPlantName());
+            plantsRowBinding.textViewTime.setText(plantModel.getStartTime());
+            plantsRowBinding.buttonOption.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showPopupMenu(v);
                 }
             });
+
+            ContextWrapper cw = new ContextWrapper(mContext);
+            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+            File file = new File(directory, plantModel.photoUrl);
+            Glide.with(mContext).load(file.toString()).centerCrop().into(plantsRowBinding.imageViewPlant);
         }
+
         AppDatabase db = Room.databaseBuilder(mContext,
                 AppDatabase.class, "ozkan").allowMainThreadQueries().build();
         PlantDao plantDao = db.userDao();
@@ -87,8 +107,8 @@ public class    PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantsO
 
                     switch (item.getItemId()){  //edit ekranına yolla
                         case R.id.actionEdit:
-                            PlantModel plantModel = plantsList.get(getAdapterPosition());
-                            com.example.wateringapp.EditPlantFragment editPlantFragment = new com.example.wateringapp.EditPlantFragment();
+                            PlantModel plantModel = plantModels.get(getBindingAdapterPosition());
+                            EditPlantFragment editPlantFragment = new EditPlantFragment();
                             Bundle bundle = new Bundle();
                             bundle.putInt("uid",plantModel.getUid());
                             bundle.putString("plantName",plantModel.getPlantName());
@@ -104,10 +124,10 @@ public class    PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantsO
                             return true;
                         case R.id.actionDelete:
 
-                            int uid = plantsList.get(getAdapterPosition()).getUid();
+                            int uid = plantModels.get(getBindingAdapterPosition()).getUid();
                             cancelAlarm(uid);
-                            String url = plantsList.get(getAdapterPosition()).getPhotoUrl();
-                            plantsList.remove(getAdapterPosition());
+                            String url = plantModels.get(getBindingAdapterPosition()).getPhotoUrl();
+                            plantModels.remove(getBindingAdapterPosition());
                             notifyDataSetChanged();
                             plantDao.delete(uid);
 
@@ -126,47 +146,11 @@ public class    PlantsAdapter extends RecyclerView.Adapter<PlantsAdapter.PlantsO
 
     }
 
-
     private void cancelAlarm(int id) {
         AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(mContext, AlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, id, intent, 0);
         alarmManager.cancel(pendingIntent);
     }
-
-    public void setList(List<PlantModel> plantsList) {
-        this.plantsList = plantsList;
-        notifyDataSetChanged();
-    }
-
-    @NonNull
-    @Override
-    public PlantsObjHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.plants_row,parent,false);
-        return new PlantsObjHolder(itemView);
-    }
-
-
-    @Override
-    public void onBindViewHolder(@NonNull PlantsObjHolder holder, int position) {
-
-        plant = plantsList.get(position);
-
-        holder.binding.textViewPlantName.setText(plant.plantName);
-        holder.binding.textViewTime.setText(plant.startTime);
-
-        ContextWrapper cw = new ContextWrapper(mContext);
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        File file = new File(directory, plant.photoUrl);
-        Glide.with(mContext).load(file.toString()).centerCrop().into(holder.binding.imageViewPlant);
-
-
-
-    }
-    @Override
-    public int getItemCount() {
-        return plantsList.size();
-    }
-
+    
 }
-*/

@@ -6,6 +6,28 @@
     <string name="once_a_day">Günde 1 Defa </string>
 
     <string name="error_message">Geçerli bir şehir adı giriniz</string>
+    <string name="baslangic_tarihi">Başlangıç Tarihi</string>
+    <string name="bitki_ad">Bitki Adı</string>
+    <string name="duzenle">Düzenle</string>
+    <string name="baslangic_saati">Başlangıç Saati</string>
+    <string name="ekle">Ekle</string>
+    <string name="ehir">Şehir</string>
+    <string name="hissedilen">Hissedilen</string>
+    <string name="en_dusuk">En Düşük</string>
+    <string name="en_yuksek">En Yüksek</string>
+    <string name="nem">Nem</string>
+    <string name="e_posta_adresi">E-posta Adresi</string>
+    <string name="sifre">Şifre</string>
+    <string name="giris">Giriş</string>
+    <string name="register_now">Register Now</string>
+    <string name="kayit">Kayıt ol</string>
+    <string name="todo">TODO</string>
+    <string name="zaten_bir_hesabim_var">Zaten bir hesabım var.</string>
+    <string name="kullanici_adi">Kullanıcı Adı</string>
+    <string name="cikis">Çıkış</string>
+    <string name="hava_durumu">Hava Durumu</string>
+    <string name="bitki_ekle">Bitki Ekle</string>
+    <string name="bitkiler">Bitkiler</string>
 
 
     <string-array name="plants_routine">

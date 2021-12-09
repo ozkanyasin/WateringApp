@@ -37,6 +37,7 @@ import androidx.fragment.app.Fragment;
 import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
+import com.example.wateringapp.databinding.EditFragmentBinding;
 import com.example.wateringapp.models.PlantModel;
 import com.example.wateringapp.repository.AppDatabase;
 import com.example.wateringapp.repository.PlantDao;
@@ -50,31 +51,20 @@ import static android.app.Activity.RESULT_OK;
 
 public class EditPlantFragment extends Fragment {
 
-    private ImageButton imageButtonEdit;
-    private EditText editTextNameEdit, editTextDatePickerEdit, editTextTimePickerEdit;
-    private Spinner spinnerEdit;
-    private Button buttonEdit;
+    private EditFragmentBinding binding;
+
     private String selectedRoutine = "";
     private int selectedRoutineId = 0;
-    private Bitmap bitmap;
     private String photoUrlEdit;
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
-    private Uri imageUri;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.edit_fragment, container,false);
-        imageButtonEdit = view.findViewById(R.id.imageButtonEdit);
-        editTextNameEdit = view.findViewById(R.id.editTextNameEdit);
-        editTextDatePickerEdit = view.findViewById(R.id.editTextDatePickerEdit);
-        editTextTimePickerEdit = view.findViewById(R.id.editTextTimePickerEdit);
-        spinnerEdit = view.findViewById(R.id.spinnerEdit);
-        buttonEdit = view.findViewById(R.id.buttonEdit);
-
+        binding = EditFragmentBinding.inflate(inflater,container,false);
 
 
         Bundle args = getArguments();
@@ -94,10 +84,10 @@ public class EditPlantFragment extends Fragment {
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         File file = new File(directory, plantModel.photoUrl);
 
-        editTextNameEdit.setText(plantModel.plantName);
-        editTextTimePickerEdit.setText(plantModel.startTime);
-        editTextDatePickerEdit.setText(plantModel.startDate); // tarih, periyot çekmeye bak
-        imageButtonEdit.setImageDrawable(Drawable.createFromPath(file.toString()));
+        binding.editTextNameEdit.setText(plantModel.plantName);
+        binding.editTextTimePickerEdit.setText(plantModel.startTime);
+        binding.editTextDatePickerEdit.setText(plantModel.startDate); // tarih, periyot çekmeye bak
+        binding.imageButtonEdit.setImageDrawable(Drawable.createFromPath(file.toString()));
 
         AppDatabase db = Room.databaseBuilder(getContext(),
                 AppDatabase.class, "ozkan").allowMainThreadQueries().build();
@@ -109,7 +99,7 @@ public class EditPlantFragment extends Fragment {
             }, 100 );
         }
 
-        imageButtonEdit.setOnClickListener(new View.OnClickListener() {
+        binding.imageButtonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -152,19 +142,19 @@ public class EditPlantFragment extends Fragment {
         });
 
 
-        buttonEdit.setOnClickListener(new View.OnClickListener() {
+        binding.buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                PlantModel model = new PlantModel(plantModel.getUid(),editTextNameEdit.getText().toString(),
-                        editTextDatePickerEdit.getText().toString(),
-                        editTextTimePickerEdit.getText().toString(),
+                PlantModel model = new PlantModel(plantModel.getUid(),binding.editTextNameEdit.getText().toString(),
+                        binding.editTextDatePickerEdit.getText().toString(),
+                        binding.editTextTimePickerEdit.getText().toString(),
                         selectedRoutine,
                         selectedRoutineId,
                         photoUrlEdit);
-                if (editTextNameEdit.getText().toString() == null || editTextTimePickerEdit.getText().toString() == null ||
-                        editTextDatePickerEdit.getText().toString() == null || selectedRoutine == null || photoUrlEdit == null){
+                if (binding.editTextNameEdit.getText().toString() == null || binding.editTextTimePickerEdit.getText().toString() == null ||
+                        binding.editTextDatePickerEdit.getText().toString() == null || selectedRoutine == null || photoUrlEdit == null){
                     Toast.makeText(getContext(), "Eksik bilgi",Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -177,7 +167,7 @@ public class EditPlantFragment extends Fragment {
             }
         });
 
-        editTextDatePickerEdit.setOnClickListener(new View.OnClickListener() {
+        binding.editTextDatePickerEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
@@ -191,7 +181,7 @@ public class EditPlantFragment extends Fragment {
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         month = month+1;
                         String date = dayOfMonth+"/"+month+"/"+year;
-                        editTextDatePickerEdit.setText(date);
+                        binding.editTextDatePickerEdit.setText(date);
                     }
                 },year,month,day);
                 datePickerDialog.setTitle("Tarih Seçiniz");
@@ -201,7 +191,7 @@ public class EditPlantFragment extends Fragment {
             }
         });
 
-        editTextTimePickerEdit.setOnClickListener(new View.OnClickListener() {
+        binding.editTextTimePickerEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance(); // telefondan zaman değerlerini aldık
@@ -214,9 +204,9 @@ public class EditPlantFragment extends Fragment {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
                         if (minute<10){
-                            editTextTimePickerEdit.setText(hourOfDay+":"+"0"+minute);
+                            binding.editTextTimePickerEdit.setText(hourOfDay+":"+"0"+minute);
                         } else {
-                            editTextTimePickerEdit.setText(hourOfDay+":"+minute);
+                            binding.editTextTimePickerEdit.setText(hourOfDay+":"+minute);
                         }
                     }
                 },hour,minute,true);
@@ -228,13 +218,12 @@ public class EditPlantFragment extends Fragment {
             }
         });
 
-        // spinnerEdit = (Spinner) view.findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.plants_routine, R.layout.color_spinner_layout);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        spinnerEdit.setAdapter(adapter);
+        binding.spinnerEdit.setAdapter(adapter);
 
-        spinnerEdit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.spinnerEdit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedRoutine = parent.getItemAtPosition(position).toString();
@@ -247,7 +236,7 @@ public class EditPlantFragment extends Fragment {
             }
         });
 
-        return view;
+        return binding.getRoot();
     }
 
 
@@ -263,16 +252,16 @@ public class EditPlantFragment extends Fragment {
 
         if (requestCode == 100 ){
             //Get capture image
-            bitmap = (Bitmap) data.getExtras().get("data");
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             //Set capture image to image view
             updateUrl(bitmap);
 
-            Glide.with(this).load(bitmap).into(imageButtonEdit);
+            Glide.with(this).load(bitmap).into(binding.imageButtonEdit);
 
 
 
         }else if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
-            imageUri = data.getData();
+            Uri imageUri = data.getData();
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
@@ -282,7 +271,7 @@ public class EditPlantFragment extends Fragment {
 
             updateUrl(bitmap);
 
-            Glide.with(this).load(imageUri).into(imageButtonEdit);
+            Glide.with(this).load(imageUri).into(binding.imageButtonEdit);
 
         }
 

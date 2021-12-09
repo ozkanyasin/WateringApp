@@ -1,31 +1,45 @@
 package com.example.wateringapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.wateringapp.databinding.ActivityMainBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ActivityMainBinding binding;
     private Fragment tempFragment;
-    private BottomNavigationView bottomNavigationView;
+    private FirebaseAuth mAuth;
     String tag ="";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setItemIconTintList(null);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() == null){
+            Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(loginIntent);
+            Toast.makeText(this,"Lütfen Giriş Yapınız",Toast.LENGTH_LONG).show();
+        }
+
+        binding.bottomNavigationView.setItemIconTintList(null);
 
         loadFragments(new PlantListFragment(),tag);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 tempFragment = null;
@@ -42,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
                         tempFragment = new AddPlantFragment();
                         tag = "fragment3";
                         break;
+                    case R.id.action4:
+                        mAuth.signOut();
+                        Toast.makeText(MainActivity.this,"Oturum Kapatıldı",Toast.LENGTH_SHORT).show();
+                        Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivity(loginIntent);
+
                 }
                 return loadFragments(tempFragment,tag);
             }

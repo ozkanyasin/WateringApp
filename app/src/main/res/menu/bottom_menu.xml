@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
     <item
         android:id="@+id/action1"
         android:icon="@drawable/plant"
-        android:title="Bitkiler" />
+        android:title="@string/bitkiler" />
     <item
         android:id="@+id/action2"
-        android:icon="@drawable/flowers"
-        android:title="Bıdılar" />
+        android:icon="@drawable/weather"
+        android:title="@string/hava_durumu" />
     <item
         android:id="@+id/action3"
         android:icon="@drawable/planting"
-        android:title="Bitki Ekle" />
+        android:title="@string/bitki_ekle" />
+    <item
+        android:id="@+id/action4"
+        android:icon="@drawable/logout"
+        android:title="@string/cikis" />
 </menu>

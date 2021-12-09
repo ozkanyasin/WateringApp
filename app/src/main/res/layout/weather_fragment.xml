@@ -27,34 +27,37 @@
 
         <EditText
             android:id="@+id/editTextSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="44dp"
             android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="30dp"
-            android:background="#fff"
+            android:layout_marginTop="200dp"
+            android:background="@drawable/custom_input"
+            android:drawablePadding="10dp"
+            android:paddingStart="10dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Şehir"
+            android:text="@string/ehir"
             android:textColor="@color/colorDeneme"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingLeft="10dp" />
 
         <ImageView
             android:id="@+id/imageSearch"
             android:layout_width="43dp"
             android:layout_height="41dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintStart_toEndOf="@+id/editTextSearch"
+            android:layout_marginTop="200dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_search_24"
             tools:ignore="VectorDrawableCompat" />
 
         <LinearLayout
-            android:layout_width="184dp"
+            android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
@@ -70,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="40sp" />
+                android:textSize="35sp" />
 
             <TextView
                 android:id="@+id/textDesc"
@@ -78,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/textMin"
@@ -86,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/textMax"
@@ -94,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/textHum"
@@ -102,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
@@ -111,7 +114,7 @@
             android:layout_width="150sp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="75dp"
             android:orientation="vertical"
             android:padding="10dp"
@@ -123,37 +126,37 @@
                 android:id="@+id/textCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Şehir"
+                android:text="@string/ehir"
                 android:textColor="@color/white"
-                android:textSize="40sp" />
+                android:textSize="35sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hissedilen"
+                android:text="@string/hissedilen"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="En Düşük"
+                android:text="@string/en_dusuk"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="En Yüksek"
+                android:text="@string/en_yuksek"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nem"
+                android:text="@string/nem"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 

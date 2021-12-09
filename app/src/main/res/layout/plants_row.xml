@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="25dp"
+    android:layout_margin="15dp"
     android:outlineSpotShadowColor="@color/black"
     app:cardBackgroundColor="@color/white_with_alpha"
     app:cardCornerRadius="15dp"
@@ -76,12 +76,11 @@
             android:clickable="true"
             android:rotation="-27"
             android:scaleType="fitCenter"
-            android:tint="@color/white_with_alpha"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.69"
-            app:tint="@color/selected_item_color"
+            app:tint="@color/white"
             tools:src="@drawable/watering" />
 
         <ImageButton
